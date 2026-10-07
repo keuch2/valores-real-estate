@@ -1,0 +1,4 @@
+# Archivos del repo que no deben servirse
+<FilesMatch "^(deploy\.sh|\.gitignore|\.deploy\.env)$">
+  Require all denied
+</FilesMatch>
