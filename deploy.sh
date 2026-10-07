@@ -26,7 +26,8 @@ echo "  $(git log -1 --format='%h %s')"
 
 echo "→ Verificando sintaxis PHP"
 [ -x "$PHP_BIN" ] || PHP_BIN="$(command -v php)"
-find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 "$PHP_BIN" -l >/dev/null
+# -n: sin php.ini; con las extensiones del server el CLI hace segfault (sintaxis no las necesita).
+find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 "$PHP_BIN" -n -l >/dev/null
 
 echo "→ Permisos"
 chown -R "$WEB_USER:$WEB_USER" "$REPO_DIR"
