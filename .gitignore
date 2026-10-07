@@ -1,0 +1,14 @@
+# Credenciales de deploy (nunca versionar)
+.deploy.env
+
+# Materiales originales del cliente (pesados; el sitio usa versiones web en assets/)
+/CUMBRES DE SAN BERNARDINO/
+/LA RIBERA/
+/PARAQVARIA/
+/SOL CITY/
+/Brief_Contenidos_Sitio_Valores_Real_Estate.docx
+/Demo Valores Real Estate.html
+/Copia de _LOGO-*.png
+
+.DS_Store
+*.log
