@@ -65,7 +65,6 @@ const PROJECTS = [
         'img' => 'paraqvaria/000',
         'brochure' => 'assets/brochures/paraqvaria.pdf',
         'masterplan' => 'paraqvaria/masterplan',
-        'lots' => ['range' => [1000, 2600], 'perRow' => 10, 'water' => 'LAGO YACYRETÁ', 'center' => 'CLUB HOUSE'],
         'tagline' => 'Naturaleza, lujo y confort a orillas del Lago Yacyretá.',
         'short' => '650.000 m² con más de 1.600 metros de costa sobre el Lago Yacyretá.',
         'p1' => 'Un concepto único e innovador, ubicado estratégicamente en la ciudad de Coronel José Félix Bogado, Itapúa, con características que conjugan naturaleza, lujo y confort en un solo lugar.',
@@ -81,11 +80,10 @@ const PROJECTS = [
         'img' => 'ribera/003',
         'brochure' => 'assets/brochures/la-ribera.pdf',
         'masterplan' => 'ribera/masterplan',
-        'lots' => ['range' => [360, 620], 'perRow' => 14, 'water' => 'RÍO PARAGUAY', 'center' => 'POLO COMERCIAL · SUM'],
         'tagline' => 'Un nuevo horizonte, cerca de todo.',
-        'short' => '217 lotes residenciales y 6 de alta densidad del otro lado del río.',
+        'short' => 'Lotes residenciales y de alta densidad del otro lado del río, cerca de todo.',
         'p1' => 'La Ribera es un desarrollo urbano que propone un nuevo horizonte en la Nueva Asunción, integrando ciudad, naturaleza y planificación en una ubicación estratégica del otro lado del río.',
-        'p2' => 'Cuenta con un masterplan de 217 lotes residenciales y 6 lotes de alta densidad, integrando ciudad y entorno natural, con amenities como playas de arena, lagos, piscina, SUM y polo comercial. Un nuevo horizonte, cerca de todo: La Ribera redefine la relación entre cercanía urbana y espacio, consolidándose como una nueva centralidad en expansión.',
+        'p2' => 'Cuenta con un masterplan de lotes residenciales y lotes de alta densidad, integrando ciudad y entorno natural, con amenities como playas de arena, lagos, piscina, SUM y polo comercial. Un nuevo horizonte, cerca de todo: La Ribera redefine la relación entre cercanía urbana y espacio, consolidándose como una nueva centralidad en expansión.',
         'ig' => 'lariberaasu',
         'amenities' => [
             'Helipuerto', 'Náutica', 'Lagos interactivos', 'Playas de arena',
@@ -93,7 +91,7 @@ const PROJECTS = [
             'Zona de tratamientos corporales', 'Quincho climatizado con parrilla', 'Zona deportiva', 'Polo gastronómico y seating',
             'Generadores para el 100% de las residencias', 'Estacionamiento', 'Sala audiovisual', 'Sector de entrenamiento',
         ],
-        'facts' => [['217', 'Lotes residenciales'], ['6', 'Lotes de alta densidad'], ['Playas', 'De arena y lagos'], ['Polo', 'Comercial']],
+        'facts' => [['158', 'Lotes residenciales disponibles'], ['11', 'Lotes de alta densidad disponibles'], ['Playas', 'De arena y lagos'], ['Polo', 'Comercial']],
         'gallery' => ['ribera/003', 'ribera/006', 'ribera/004', 'ribera/007', 'ribera/008', 'ribera/010', 'ribera/011', 'ribera/012', 'ribera/014'],
     ],
     'cumbres' => [
@@ -102,7 +100,6 @@ const PROJECTS = [
         'img' => 'cumbres/053',
         'brochure' => 'assets/brochures/cumbres.pdf',
         'masterplan' => 'cumbres/masterplan',
-        'lots' => ['range' => [800, 1500], 'perRow' => 4, 'water' => 'LAGO YPACARAÍ', 'center' => 'ÁREA VERDE'],
         'tagline' => 'Vistas abiertas e ininterrumpidas al Lago Ypacaraí.',
         'short' => 'Barrio cerrado con masterplan aterrazado, a pasos del centro y del Club Náutico.',
         'p1' => 'Cumbres de San Bernardino es un desarrollo residencial exclusivo, ubicado estratégicamente en una de las zonas más privilegiadas de la ciudad, a pasos del centro y del Club Náutico, con vistas abiertas e ininterrumpidas al Lago Ypacaraí.',
@@ -114,7 +111,7 @@ const PROJECTS = [
             'text' => 'Cumbres cuenta con una zona deportiva con canchas de pádel, con clases de lunes a viernes.',
             'phones' => ['0981 419 177', '0986 466 646'],
         ],
-        'facts' => [['12 ha', 'Superficie del condominio'], ['+60', 'Lotes en 12 manzanas'], ['Vista al lago', 'Desde cada lote'], ['Club Náutico', 'A pasos']],
+        'facts' => [['12 ha', 'Superficie del condominio'], ['80', 'Lotes residenciales'], ['Vista al lago', 'Desde cada lote'], ['Club Náutico', 'A pasos']],
         'gallery' => ['cumbres/053', 'cumbres/044', 'cumbres/052', 'cumbres/051', 'cumbres/008', 'cumbres/045', 'cumbres/057', 'cumbres/js03'],
     ],
 ];
@@ -122,7 +119,7 @@ const PROJECTS = [
 const COMPARE = [
     ['Ubicación', null],
     ['Tipo', ['Departamentos de 2 y 3 dormitorios', 'Lotes en barrio cerrado', 'Lotes residenciales y de alta densidad', 'Lotes en barrio cerrado']],
-    ['Superficie', ['88 a 112 m² propios', '650.000 m² de predio', '217 + 6 lotes', '12 ha · +60 lotes']],
+    ['Superficie', ['88 a 229 m² propios', '650.000 m² de predio', 'Lotes de 530 a 6.797 m²', '12 ha · 80 lotes']],
     ['Amenities', ['Rooftop con piscina, gimnasio, co-working, quincho', 'Pista de aviación, club house, área náutica, playa, piscina', 'Helipuerto, náutica, lagos, playas de arena, wellness, polo gastronómico', 'Club house, canchas de pádel, vistas al lago, áreas verdes']],
     ['Entorno', ['Urbano', 'Lago Yacyretá', 'Río Paraguay', 'Lago Ypacaraí']],
 ];

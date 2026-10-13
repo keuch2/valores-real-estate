@@ -12,3 +12,7 @@
 
 .DS_Store
 *.log
+
+# Planillas internas del cliente (precios, cuentas)
+/lotes.xlsx
+*.xlsx

@@ -109,44 +109,30 @@ page_header('proyectos', $p['fullName'], $p['short']);
 </section>
 <?php endif; ?>
 
-<?php if ($p['kind'] === 'lots'): ?>
-<section class="wrap section">
+<?php if ($p['kind'] === 'lots'): $lots = LOTS[$id]; $onlyAvailable = !array_filter($lots, fn($l) => $l['status'] !== 'disponible'); ?>
+<section class="wrap section" data-lots="<?= e(json_encode(['name' => $p['fullName'], 'lots' => $lots], JSON_UNESCAPED_UNICODE)) ?>">
   <div class="section-head">
     <div>
-      <div class="eyebrow">Masterplan</div>
-      <h2 class="display-3">Plano general del proyecto</h2>
-    </div>
-    <div class="muted small">Clic para ampliar y hacer zoom</div>
-  </div>
-  <button type="button" class="masterplan" data-single="<?= img($p['masterplan']) ?>" data-label="Masterplan · <?= e($p['fullName']) ?>">
-    <img src="<?= img($p['masterplan'], true) ?>" alt="Masterplan de <?= e($p['fullName']) ?>" loading="lazy">
-    <span class="masterplan-hint">Ampliar masterplan</span>
-  </button>
-</section>
-
-<section class="wrap section" data-lots="<?= e(json_encode(['id' => $id, 'name' => $p['fullName']] + $p['lots'], JSON_UNESCAPED_UNICODE)) ?>">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">Disponibilidad</div>
-      <h2 class="display-3">Lotes disponibles</h2>
+      <div class="eyebrow">Masterplan y disponibilidad</div>
+      <h2 class="display-3">Lotes de <?= e($p['name']) ?></h2>
     </div>
     <div class="pill-row" data-lot-filters></div>
   </div>
   <div class="lots-layout">
-    <div class="lots-map">
-      <div class="lots-scroll"><svg viewBox="0 0 1010 560" data-lot-svg></svg></div>
-      <div class="zoom-ctrl">
-        <button type="button" data-mp="in" aria-label="Acercar">+</button>
-        <button type="button" data-mp="out" aria-label="Alejar">−</button>
-      </div>
-    </div>
+    <button type="button" class="masterplan" data-single="<?= img($p['masterplan']) ?>" data-label="Masterplan · <?= e($p['fullName']) ?>">
+      <img src="<?= img($p['masterplan'], true) ?>" alt="Masterplan de <?= e($p['fullName']) ?>" loading="lazy">
+      <span class="masterplan-hint">Ampliar masterplan</span>
+    </button>
     <div class="lots-panel">
+      <label class="lots-mz">Manzana
+        <select data-lot-mz><option value="">Todas</option></select>
+      </label>
       <div class="lot-detail" data-lot-detail hidden></div>
       <div class="lots-row lots-row-head"><span>Lote</span><span>Superficie</span><span>Estado</span></div>
       <div class="lots-list" data-lot-list></div>
     </div>
   </div>
-  <p class="note">Plano ilustrativo. Disponibilidad sujeta a confirmación del asesor comercial.</p>
+  <p class="note"><?= $onlyAvailable ? 'Se muestran los lotes disponibles. ' : '' ?>Disponibilidad según la lista vigente, sujeta a confirmación del asesor comercial.</p>
 </section>
 <?php endif; ?>
 
@@ -175,6 +161,26 @@ page_header('proyectos', $p['fullName'], $p['short']);
       </div>
     </div>
   <?php endforeach; ?>
+
+  <div class="units">
+    <h3 class="display-4">Disponibilidad de unidades</h3>
+    <div class="units-scroll">
+      <table class="units-table">
+        <thead><tr><th>Unidad</th><th>Piso</th><th>Tipología</th><th>Superficie</th><th>Ubicación</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <?php foreach (LOTS[$id] as $u): $free = $u['status'] === 'disponible'; ?>
+            <tr<?= $free ? '' : ' class="is-sold"' ?>>
+              <td><strong><?= e($u['n']) ?></strong></td><td><?= $u['piso'] ?></td><td><?= e(ucfirst($u['type'])) ?></td>
+              <td><?= number_format($u['m2'], 2, ',', '.') ?> m²</td><td><?= e($u['ubic']) ?></td>
+              <td><span class="lot-status"><i class="dot-<?= e($u['status']) ?>"></i><?= $free ? 'Disponible' : 'Vendido' ?></span></td>
+              <td><?php if ($free): ?><a class="btn-ghost" href="#consulta" data-scroll data-msg="<?= e("Hola, me interesa la unidad {$u['n']} ({$u['type']}, " . number_format($u['m2'], 2, ',', '.') . " m²) de Sol City.") ?>">Consultar</a><?php endif; ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Superficies propias según lista vigente. Cocheras se venden por separado.</p>
+  </div>
 </section>
 <?php endif; ?>
 

@@ -256,23 +256,14 @@ button { cursor: pointer; }
 .masterplan img { display: block; width: 100%; max-height: 720px; object-fit: contain; }
 .masterplan-hint { position: absolute; right: 16px; bottom: 16px; background: #fff; color: var(--ink); font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 999px; box-shadow: 0 4px 14px rgba(22,38,46,.15); }
 
-.lots-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); gap: 24px; align-items: start; }
+.lots-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(340px, 2fr); gap: 24px; align-items: start; }
 @media (max-width: 1023px) { .lots-layout { grid-template-columns: minmax(0, 1fr); } }
-.lots-map { position: relative; border: 1px solid var(--line); border-radius: 4px; background: #FAFBFB; }
-.lots-scroll { overflow: auto; max-height: 620px; }
-.lots-scroll svg { display: block; width: 100%; }
-.lots-scroll svg g[data-n] { cursor: pointer; }
-.lots-scroll svg g[data-n]:hover rect { stroke: var(--ink); }
-.zoom-ctrl { position: absolute; right: 14px; top: 14px; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-.zoom-ctrl button { width: 40px; height: 40px; border: none; background: #fff; font-size: 20px; color: var(--ink); }
-.zoom-ctrl button + button { border-top: 1px solid var(--line); }
-.zoom-ctrl button:hover { background: var(--soft); }
 .lots-panel { border: 1px solid var(--line); border-radius: 4px; display: flex; flex-direction: column; }
 .lot-detail { padding: 26px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; background: var(--soft); }
 .lot-detail-head { display: flex; justify-content: space-between; align-items: center; }
 .lot-detail-head span:first-child { font-family: var(--display); font-size: 30px; }
 .status-tag { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; color: var(--ink); }
-.lots-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1.1fr; align-items: center; padding: 13px 22px; border: none; border-bottom: 1px solid var(--line-soft); background: #fff; text-align: left; font-size: 15px; color: var(--ink); }
+.lots-row { width: 100%; display: grid; grid-template-columns: 1.5fr 1fr 1.1fr; align-items: center; padding: 13px 22px; border: none; border-bottom: 1px solid var(--line-soft); background: #fff; text-align: left; font-size: 15px; color: var(--ink); }
 button.lots-row:hover { background: var(--soft); }
 button.lots-row.is-on { background: #EAF2F5; }
 .lots-row-head { padding: 14px 22px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom-color: var(--line); background: none; }
@@ -420,3 +411,20 @@ body.no-scroll { overflow: hidden; }
 .video-play-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--amber); position: relative; }
 .video-play-icon::after { content: ""; position: absolute; left: 19px; top: 15px; border-style: solid; border-width: 9px 0 9px 14px; border-color: transparent transparent transparent var(--ink); }
 .video-wrap.is-playing .video-play { display: none; }
+
+/* ---------- lotes y unidades (lista vigente) ---------- */
+.lots-row small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.lots-mz { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 22px; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.lots-mz select { font: inherit; text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 500; color: var(--ink); border: 1px solid var(--line-input); border-radius: 999px; padding: 8px 14px; background: #fff; }
+.lots-empty { padding: 22px; color: var(--muted); font-size: 15px; }
+.lots-list { max-height: 560px; }
+.units { margin-top: 64px; border-top: 1px solid var(--line); padding-top: 40px; }
+.units .display-4 { margin-bottom: 24px; }
+.units-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; }
+.units-table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 680px; }
+.units-table th { text-align: left; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.units-table td { padding: 13px 18px; border-bottom: 1px solid var(--line-soft); color: var(--ink); }
+.units-table tr:last-child td { border-bottom: none; }
+.units-table tr.is-sold td { color: var(--faint); }
+.units-table td:last-child { text-align: right; }
+.dot-disponible { background: var(--blue); } .dot-vendido { background: var(--faint); }

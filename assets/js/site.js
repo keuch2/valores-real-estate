@@ -3,7 +3,6 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const fmt = n => n.toLocaleString('es-PY');
 
   /* ---------- mobile menu ---------- */
   const toggle = $('.menu-toggle');
@@ -161,103 +160,56 @@
     });
   }
 
-  /* ---------- lots (plano ilustrativo) ---------- */
+  /* ---------- lotes (datos de la lista vigente) ---------- */
   const ST = {
     disponible: { fill: '#CFE1E8', dot: '#2F6880', label: 'Disponible' },
     reservado: { fill: '#FCE7B0', dot: '#F5A800', label: 'Reservado' },
     vendido: { fill: '#DDE1E3', dot: '#9AA7AD', label: 'Vendido' },
+    nodisponible: { fill: '#EEF1F2', dot: '#C9D2D6', label: 'No disponible' },
   };
-  function genLots(cfg) {
-    let seed = 0;
-    for (const ch of cfg.id) seed = (seed * 31 + ch.charCodeAt(0)) % 2147483646;
-    seed += 1;
-    const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
-    const out = [];
-    const bw = 290, bh = 110, gx = 30, gy = 34, x0 = 40, y0 = 30, per = cfg.perRow, lw = bw / per;
-    let n = 1, blk = 0;
-    for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) {
-      if (r === 1 && c === 1) continue;
-      blk++;
-      const bx = x0 + c * (bw + gx), by = y0 + r * (bh + gy);
-      for (let row = 0; row < 2; row++) for (let i = 0; i < per; i++) {
-        const s = rnd();
-        const m2 = Math.round((cfg.range[0] + rnd() * (cfg.range[1] - cfg.range[0])) / 10) * 10;
-        out.push({ n, block: blk, x: bx + i * lw, y: by + row * bh / 2, w: lw, h: bh / 2, m2, status: s < 0.5 ? 'disponible' : s < 0.68 ? 'reservado' : 'vendido' });
-        n++;
-      }
-    }
-    return out;
-  }
+  const m2 = v => v ? `${v.toLocaleString('es-PY', { maximumFractionDigits: 2 })} m²` : '—';
   $$('[data-lots]').forEach(root => {
     const cfg = JSON.parse(root.dataset.lots);
-    const lots = genLots(cfg);
-    const svg = $('[data-lot-svg]', root);
+    const lots = cfg.lots.map((l, i) => Object.assign({ id: i }, l));
     const list = $('[data-lot-list]', root);
     const detail = $('[data-lot-detail]', root);
     const filters = $('[data-lot-filters]', root);
-    const fontSize = cfg.perRow > 12 ? 8 : 9;
-    const state = { filter: 'todos', sel: null, zoom: 1 };
-
+    const mzSelect = $('[data-lot-mz]', root);
     const counts = { todos: lots.length };
     lots.forEach(l => { counts[l.status] = (counts[l.status] || 0) + 1; });
-    filters.innerHTML = ['todos', 'disponible', 'reservado', 'vendido'].map(k =>
-      `<button type="button" class="pill" data-f="${k}"><span class="swatch" style="background:${k === 'todos' ? '#fff' : ST[k].fill}"></span>${k === 'todos' ? 'Todos' : ST[k].label} · ${counts[k] || 0}</button>`
-    ).join('');
+    const state = { filter: counts.disponible ? 'disponible' : 'todos', mz: '', sel: null };
+    const keys = ['todos'].concat(Object.keys(ST).filter(k => counts[k]));
+    filters.innerHTML = keys.length > 2 ? keys.map(k =>
+      `<button type="button" class="pill" data-f="${k}"><span class="swatch" style="background:${k === 'todos' ? '#fff' : ST[k].fill}"></span>${k === 'todos' ? 'Todos' : ST[k].label} · ${counts[k]}</button>`
+    ).join('') : `<span class="muted small">${counts.disponible || 0} lotes disponibles</span>`;
+    [...new Set(lots.map(l => l.mz))].forEach(mz => mzSelect.add(new Option(mz, mz)));
 
+    const name = l => `Mz. ${l.mz} · Lote ${l.n}`;
     function render() {
-      const sel = lots.find(l => l.n === state.sel);
       $$('[data-f]', filters).forEach(b => b.classList.toggle('is-on', b.dataset.f === state.filter));
+      list.innerHTML = lots.filter(l => (state.filter === 'todos' || l.status === state.filter) && (!state.mz || l.mz === state.mz)).map(l =>
+        `<button type="button" class="lots-row${l.id === state.sel ? ' is-on' : ''}" data-id="${l.id}"><span>${esc(name(l))}${l.type ? `<small>${esc(l.type)}</small>` : ''}</span><span>${m2(l.m2)}</span><span class="lot-status"><i style="background:${ST[l.status].dot}"></i>${ST[l.status].label}</span></button>`
+      ).join('') || '<div class="lots-empty">No hay lotes con este filtro.</div>';
 
-      svg.innerHTML =
-        '<rect width="1010" height="560" fill="#FAFBFB"/>' +
-        '<path d="M0 478 C 140 456, 260 500, 420 482 S 720 452, 860 476 S 980 470, 1010 466 L1010 560 L0 560 Z" fill="#DCEAF0"/>' +
-        `<text x="505" y="528" text-anchor="middle" font-size="15" fill="#2F6880" font-family="Montserrat" letter-spacing="3">${esc(cfg.water)}</text>` +
-        '<rect x="360" y="174" width="290" height="110" rx="4" fill="#E4EFE6"/>' +
-        `<text x="505" y="234" text-anchor="middle" font-size="14" fill="#4E7A5A" font-family="Montserrat" letter-spacing="2">${esc(cfg.center)}</text>` +
-        lots.map(l => {
-          const on = l.n === state.sel;
-          const dim = state.filter !== 'todos' && l.status !== state.filter;
-          return `<g data-n="${l.n}" opacity="${dim ? 0.25 : 1}"><rect x="${l.x}" y="${l.y}" width="${l.w}" height="${l.h}" fill="${on ? '#2F6880' : ST[l.status].fill}" stroke="${on ? '#16262E' : '#fff'}" stroke-width="${on ? 2 : 1.5}"><title>Lote ${l.n} · ${fmt(l.m2)} m² · ${ST[l.status].label}</title></rect>` +
-            `<text x="${l.x + l.w / 2}" y="${l.y + l.h / 2 + 3}" text-anchor="middle" font-size="${fontSize}" fill="${on ? '#fff' : '#3C4C54'}" font-family="Montserrat" pointer-events="none">${l.n}</text></g>`;
-        }).join('');
-      svg.style.width = svg.style.minWidth = Math.round(state.zoom * 100) + '%';
-
-      list.innerHTML = lots.filter(l => state.filter === 'todos' || l.status === state.filter).map(l =>
-        `<button type="button" class="lots-row${l.n === state.sel ? ' is-on' : ''}" data-n="${l.n}"><span>N.º ${l.n}</span><span>${fmt(l.m2)} m²</span><span class="lot-status"><i style="background:${ST[l.status].dot}"></i>${ST[l.status].label}</span></button>`
-      ).join('');
-
+      const sel = lots.find(l => l.id === state.sel);
       detail.hidden = !sel;
       if (sel) {
         detail.innerHTML =
-          `<div class="lot-detail-head"><span>Lote ${sel.n}</span><span class="status-tag" style="background:${ST[sel.status].fill}">${ST[sel.status].label}</span></div>` +
-          `<div>Superficie: <strong>${fmt(sel.m2)} m²</strong> · Manzana ${sel.block}</div>` +
-          `<a class="btn btn-primary btn-sm" href="#consulta" data-scroll data-msg="${esc(`Hola, me interesa el lote ${sel.n} (${fmt(sel.m2)} m²) de ${cfg.name}.`)}">Consultar por este lote</a>`;
+          `<div class="lot-detail-head"><span>${esc(name(sel))}</span><span class="status-tag" style="background:${ST[sel.status].fill}">${ST[sel.status].label}</span></div>` +
+          `<div>Superficie: <strong>${m2(sel.m2)}</strong>${sel.type ? ` · ${esc(sel.type)}` : ''}</div>` +
+          (sel.status === 'disponible' ? `<a class="btn btn-primary btn-sm" href="#consulta" data-scroll data-msg="${esc(`Hola, me interesa el lote ${sel.n} de la manzana ${sel.mz} (${m2(sel.m2)}) de ${cfg.name}.`)}">Consultar por este lote</a>` : '');
       }
-    }
-
-    function pick(n) {
-      state.sel = n;
-      render();
-      const row = $(`.lots-row[data-n="${n}"]`, list);
-      if (row) list.scrollTop = row.offsetTop - list.offsetTop - list.clientHeight / 2 + row.offsetHeight / 2;
     }
 
     filters.addEventListener('click', e => {
       const b = e.target.closest('[data-f]');
       if (b) { state.filter = b.dataset.f; render(); }
     });
-    svg.addEventListener('click', e => {
-      const g = e.target.closest('[data-n]');
-      if (g) pick(Number(g.dataset.n));
-    });
+    mzSelect.addEventListener('change', () => { state.mz = mzSelect.value; render(); });
     list.addEventListener('click', e => {
-      const b = e.target.closest('[data-n]');
-      if (b) { state.sel = Number(b.dataset.n); render(); }
+      const b = e.target.closest('[data-id]');
+      if (b) { state.sel = Number(b.dataset.id); render(); }
     });
-    $$('[data-mp]', root).forEach(b => b.addEventListener('click', () => {
-      state.zoom = b.dataset.mp === 'in' ? Math.min(3, state.zoom + 0.5) : Math.max(1, state.zoom - 0.5);
-      render();
-    }));
     render();
   });
 

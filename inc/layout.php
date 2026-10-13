@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/data.php';
+require __DIR__ . '/lots.php';
 
 function e(?string $s): string
 {
