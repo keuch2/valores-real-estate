@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Script de Livewire con la subcarpeta incluida (ver SubfolderLivewireRequests).
         if (! $this->app->runningInConsole()) {
-            config(['livewire.asset_url' => url('livewire/livewire.js')]);
+            config(['livewire.asset_url' => url(config('app.debug') ? 'livewire/livewire.js' : 'livewire/livewire.min.js')]);
         }
 
         View::composer(['components.layouts.site', 'pages.contact'], function ($view) {

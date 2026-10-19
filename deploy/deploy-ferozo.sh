@@ -75,7 +75,7 @@ grep -q '^APP_KEY=.\+' .env || $PHP_BIN artisan key:generate --force --quiet
 $PHP_BIN artisan migrate --force
 $PHP_BIN artisan optimize:clear --quiet
 $PHP_BIN artisan config:cache --quiet
-$PHP_BIN artisan route:cache --quiet
+# Sin route:cache: con el sitio en subcarpeta, el matcher compilado responde 405 en la raíz ("/vre-staging/").
 $PHP_BIN artisan view:cache --quiet
 $PHP_BIN artisan filament:optimize --quiet
 mkdir -p storage/app/public storage/app/private
@@ -124,7 +124,7 @@ chown -h $OWNER '$PUBLIC_DIR'/* 2>/dev/null || true
 REMOTE_SCRIPT
 
 echo "==> 5/5 comprobación"
-URL="$("${SSH[@]}" "$REMOTE" "grep '^APP_URL=' '$APP_DIR/.env' | cut -d= -f2- | tr -d '\"'")"
+URL="${CHECK_URL:-$(grep '^APP_URL=' "$ENV_FILE" 2>/dev/null | cut -d= -f2- | tr -d '"')}"
 for path in /up / /proyectos/cumbres /admin/login; do
   curl -s -o /dev/null -w "    $URL$path -> %{http_code}\n" "$URL$path"
 done
