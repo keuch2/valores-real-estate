@@ -1,4 +1,4 @@
-# Archivos del repo que no deben servirse
-<FilesMatch "^(deploy\.sh|\.gitignore|\.deploy\.env|.*\.py|.*\.xlsx)$">
-  Require all denied
-</FilesMatch>
+# Cuando el proyecto cuelga directamente del DocumentRoot (ej. http://localhost/valores-real-estate/public/),
+# nada fuera de public/ debe ser accesible: .env, storage/, vendor/, etc.
+# public/.htaccess vuelve a habilitar el acceso sólo para esa carpeta.
+Require all denied
