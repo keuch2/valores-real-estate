@@ -105,8 +105,9 @@ class FormSubmissionResource extends Resource
                 TextColumn::make('name')->label('Nombre')->searchable()->description(fn (FormSubmission $r) => $r->project?->name),
                 TextColumn::make('email')->label('Email')->searchable(),
                 TextColumn::make('phone')->label('Teléfono')->toggleable(),
-                IconColumn::make('cv_path')->label('CV')->boolean()->getStateUsing(fn (FormSubmission $r) => (bool) $r->cv_path)->toggleable(),
-                IconColumn::make('is_spam_suspect')->label('Spam?')->boolean()->trueColor('danger')->falseIcon('')->toggleable(),
+                IconColumn::make('cv_path')->label('CV')->icon(fn ($state) => $state ? Heroicon::OutlinedPaperClip : null)->color('gray')->toggleable(),
+                IconColumn::make('is_spam_suspect')->label('Spam?')->icon(fn ($state) => $state ? Heroicon::OutlinedExclamationTriangle : null)
+                    ->color('danger')->tooltip(fn ($state) => $state ? 'Posible spam' : null)->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('project_id')->label('Proyecto')->relationship('project', 'name'),
