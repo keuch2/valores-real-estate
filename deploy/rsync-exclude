@@ -1,0 +1,36 @@
+# Nunca se sube ni se borra en el servidor (rsync --delete respeta las exclusiones):
+# medios del CMS y CV de postulaciones viven sólo en el servidor.
+/storage/app/public/*
+/storage/app/private/*
+/storage/app/livewire-tmp
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/bootstrap/cache/*.php
+/public/storage
+/public/css/filament
+/public/js/filament
+/public/fonts/filament
+/vendor
+/node_modules
+/.env
+/.env.*
+/.git
+/.deploy.env
+/deploy/.env.*.local
+/tests
+/legacy
+/.phpunit.cache
+# Materiales y planillas internas del cliente
+*.xlsx
+*.docx
+/CUMBRES DE SAN BERNARDINO
+/LA RIBERA
+/PARAQVARIA
+/SOL CITY
+/Demo Valores Real Estate.html
+/Copia de _LOGO-*.png
+.DS_Store
+/.vscode
