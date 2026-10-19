@@ -66,7 +66,7 @@ cd '$APP_DIR'
 mkdir -p '$BACKUP_DIR' && chmod 700 '$BACKUP_DIR'
 DB=\$(grep '^DB_DATABASE=' .env | cut -d= -f2- | tr -d '"')
 if [ -n "\$DB" ] && mysql -e "use \$DB" 2>/dev/null; then
-  mysqldump --single-transaction "\$DB" | gzip > '$BACKUP_DIR'/pre-deploy-\$(date +%Y%m%d-%H%M%S).sql.gz
+  (umask 077; mysqldump --single-transaction "\$DB" | gzip > '$BACKUP_DIR'/pre-deploy-\$(date +%Y%m%d-%H%M%S).sql.gz)
   ls -1t '$BACKUP_DIR'/pre-deploy-*.sql.gz | tail -n +11 | xargs -r rm -f
 fi
 export COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_HOME=/root/.composer

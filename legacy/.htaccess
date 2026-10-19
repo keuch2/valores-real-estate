@@ -1,4 +1,0 @@
-# Archivos del repo que no deben servirse
-<FilesMatch "^(deploy\.sh|\.gitignore|\.deploy\.env|.*\.py|.*\.xlsx)$">
-  Require all denied
-</FilesMatch>
