@@ -39,6 +39,17 @@ class Project extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Si cambia el slug, el anterior se guarda para redirigir (301) los enlaces viejos.
+        static::updating(function (self $project) {
+            if ($project->isDirty('slug') && $project->getOriginal('slug')) {
+                $previous = array_values(array_diff($project->previous_slugs ?? [], [$project->slug]));
+                $project->previous_slugs = array_values(array_unique([...$previous, $project->getOriginal('slug')]));
+            }
+        });
+    }
+
     public function images(): HasMany
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order');

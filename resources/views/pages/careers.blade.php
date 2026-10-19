@@ -16,7 +16,7 @@
       <label>Teléfono<input name="telefono" type="tel" required autocomplete="tel" value="{{ old('telefono') }}"></label>
       <label>Email<input name="email" type="email" required autocomplete="email" value="{{ old('email') }}"></label>
       <label>Área de interés
-        <select name="area">@foreach ($page->get('areas', []) as $area)<option>{{ $area['label'] }}</option>@endforeach</select>
+        <select name="area">@foreach ($page->get('areas', []) as $area)<option>{{ $area }}</option>@endforeach</select>
       </label>
       <label class="full file-drop">
         <span class="stack-4"><strong data-file-name>Tu currículum</strong><span class="muted small">PDF o Word, máximo 5 MB</span></span>

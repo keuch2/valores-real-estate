@@ -17,6 +17,22 @@ class News extends Model
         return ['published_at' => 'datetime', 'is_published' => 'boolean', 'image_is_render' => 'boolean'];
     }
 
+    /** El cuerpo de las notas originales se guarda sanitizado (sin scripts, estilos ni atributos peligrosos). */
+    protected function body(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            set: fn (?string $value) => $value === null ? null : (new \Symfony\Component\HtmlSanitizer\HtmlSanitizer(
+                (new \Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig)
+                    ->allowSafeElements()
+                    ->allowRelativeLinks()
+                    ->allowLinkSchemes(['https', 'http', 'mailto'])
+                    ->allowMediaSchemes(['https', 'http'])
+                    ->allowRelativeMedias()
+                    ->forceAttribute('a', 'rel', 'noopener')
+            ))->sanitize($value),
+        );
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

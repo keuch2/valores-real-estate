@@ -17,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(\Livewire\Mechanisms\HandleRequests\HandleRequests::class, \App\Support\SubfolderLivewireRequests::class);
+
         // El SMTP se configura desde el CMS: se aplica justo antes de crear el primer mailer.
         $this->app->afterResolving('mail.manager', function () {
             try {
@@ -42,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Script de Livewire con la subcarpeta incluida (ver SubfolderLivewireRequests).
+        if (! $this->app->runningInConsole()) {
+            config(['livewire.asset_url' => url('livewire/livewire.js')]);
+        }
+
         View::composer(['components.layouts.site', 'pages.contact'], function ($view) {
             $view->with('general', app(GeneralSettings::class))->with('whatsapp', app(WhatsappSettings::class));
         });

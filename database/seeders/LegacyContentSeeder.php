@@ -253,7 +253,7 @@ class LegacyContentSeeder extends Seeder
             'lead' => 'Buscamos personas comprometidas en las áreas comercial, desarrollo de proyectos, administración y marketing. Envianos tu CV y te contactaremos cuando haya una posición acorde a tu perfil.',
             'image' => $this->copy('img/general/trabaja.jpg', 'pages/trabaja.jpg'),
             'image_is_render' => false,
-            'areas' => array_map(fn ($t) => ['label' => $t], ['Comercial / Ventas', 'Desarrollo de proyectos', 'Administración y finanzas', 'Marketing', 'Otra']),
+            'areas' => ['Comercial / Ventas', 'Desarrollo de proyectos', 'Administración y finanzas', 'Marketing', 'Otra'],
             'success_title' => 'Postulación enviada',
             'success_text' => 'Gracias por tu interés. Revisaremos tu perfil y te escribiremos.',
         ]);
@@ -291,7 +291,7 @@ class LegacyContentSeeder extends Seeder
             'steps' => array_map(fn ($s) => ['number' => $s[0], 'title' => $s[1], 'text' => $s[2]], \INVESTOR_STEPS),
             'form_title' => 'Empezá tu proceso',
             'form_lead' => 'Completá tus datos y continuá la conversación con un asesor por WhatsApp.',
-            'modality_options' => array_map(fn ($t) => ['label' => $t], ['Inmobiliaria (USD 200.000)', 'Turismo (próximamente)', 'Aún no lo sé']),
+            'modality_options' => ['Inmobiliaria (USD 200.000)', 'Turismo (próximamente)', 'Aún no lo sé'],
             'submit_label' => 'Continuar por WhatsApp',
             'success_title' => 'Solicitud recibida',
             'success_text' => 'Abrimos WhatsApp para que continúes la conversación con un asesor.',

@@ -64,7 +64,7 @@
       <label>Email<input name="email" type="email" required autocomplete="email" value="{{ old('email') }}"></label>
       <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" value="{{ old('telefono') }}"></label>
       <label class="full">Modalidad de interés
-        <select name="modalidad">@foreach ($page->get('modality_options', []) as $option)<option>{{ $option['label'] }}</option>@endforeach</select>
+        <select name="modalidad">@foreach ($page->get('modality_options', []) as $option)<option>{{ $option }}</option>@endforeach</select>
       </label>
       <x-form-errors />
       <button type="submit" class="btn btn-primary btn-lg full-start">{{ icon('whatsapp', 18) }}{{ $page->get('submit_label') }}</button>

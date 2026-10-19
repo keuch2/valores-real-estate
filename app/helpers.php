@@ -13,15 +13,11 @@ if (! function_exists('media_url')) {
         if (preg_match('~^(https?:)?//~', $path)) {
             return $path;
         }
-        $disk = Storage::disk('public');
         if ($small) {
-            $variant = preg_replace('/(\.[a-z0-9]+)$/i', '-sm$1', $path);
-            if ($variant !== $path && $disk->exists($variant)) {
-                $path = $variant;
-            }
+            $path = App\Services\ImageVariants::small($path);
         }
 
-        return $disk->url($path);
+        return Storage::disk('public')->url($path);
     }
 }
 
