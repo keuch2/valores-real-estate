@@ -40,21 +40,60 @@
     scrollToEl(el);
   });
 
-  /* ---------- demo forms ---------- */
+  /* ---------- formularios ---------- */
   function resetForm(wrap) {
     const form = $('form', wrap);
     form.reset();
     form.hidden = false;
     $('.form-success', wrap).hidden = true;
+    showErrors(form, []);
     const fileName = $('[data-file-name]', wrap);
     if (fileName) fileName.textContent = 'Tu currículum';
   }
-  $$('form[data-demo-form]').forEach(form => {
+  function showErrors(form, messages) {
+    const box = $('[data-form-errors]', form);
+    if (!box) return;
+    box.innerHTML = messages.map(m => `<p>${esc(m)}</p>`).join('');
+    box.hidden = !messages.length;
+  }
+  function recaptchaToken(action) {
+    const key = (window.VRE || {}).recaptcha;
+    if (!key || !window.grecaptcha) return Promise.resolve('');
+    return new Promise(resolve => window.grecaptcha.ready(() => window.grecaptcha.execute(key, { action }).then(resolve, () => resolve(''))));
+  }
+  $$('form[data-ajax-form]').forEach(form => {
     const wrap = form.parentElement;
-    form.addEventListener('submit', e => {
+    const button = $('button[type="submit"]', form);
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-      form.hidden = true;
-      $('.form-success', wrap).hidden = false;
+      if (button.disabled) return;
+      button.disabled = true;
+      showErrors(form, []);
+      try {
+        const data = new FormData(form);
+        data.set('g-recaptcha-response', await recaptchaToken(data.get('_form_action')));
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok) {
+          form.hidden = true;
+          $('.form-success', wrap).hidden = false;
+          if (body.whatsapp_url) {
+            const link = $('[data-whatsapp-link]', wrap);
+            if (link) { link.href = body.whatsapp_url; link.hidden = false; }
+            window.location.href = body.whatsapp_url;
+          }
+        } else if (res.status === 422 && body.errors) {
+          showErrors(form, Object.values(body.errors).flat());
+        } else if (res.status === 429) {
+          showErrors(form, ['Recibimos varios envíos seguidos. Esperá unos minutos e intentá de nuevo.']);
+        } else {
+          showErrors(form, ['No pudimos enviar el formulario. Intentá de nuevo o escribinos por WhatsApp.']);
+        }
+      } catch (err) {
+        showErrors(form, ['No pudimos enviar el formulario. Revisá tu conexión e intentá de nuevo.']);
+      } finally {
+        button.disabled = false;
+      }
     });
     const reset = $('[data-form-reset]', wrap);
     if (reset) reset.addEventListener('click', () => resetForm(wrap));

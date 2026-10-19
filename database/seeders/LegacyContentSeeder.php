@@ -100,6 +100,7 @@ class LegacyContentSeeder extends Seeder
                 'map_x' => $mapX,
                 'map_y' => $mapY,
                 'map_label_side' => $side,
+                'availability_note' => $p['kind'] === 'units' ? 'Superficies propias según lista vigente. Cocheras se venden por separado.' : null,
                 'news_tag' => $p['name'],
                 'import_format' => $format,
                 'import_sheet' => $sheet,

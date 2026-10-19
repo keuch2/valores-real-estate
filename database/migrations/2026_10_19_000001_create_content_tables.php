@@ -50,6 +50,7 @@ return new class extends Migration
             $table->string('whatsapp_number')->nullable();
             $table->string('visit_message', 500)->nullable();
             $table->string('info_message', 500)->nullable();
+            $table->string('availability_note', 500)->nullable();
             $table->string('news_tag')->nullable();
             $table->string('import_format', 20)->default('generic');
             $table->string('import_sheet')->nullable();

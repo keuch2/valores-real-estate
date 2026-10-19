@@ -20,16 +20,16 @@ class MailSettings extends Settings
 
     public string $from_name;
 
-    /** @var array<int, string> */
+    /** @var string[] */
     public array $recipients_contact;
 
-    /** @var array<int, string> */
+    /** @var string[] */
     public array $recipients_careers;
 
-    /** @var array<int, string> */
+    /** @var string[] */
     public array $recipients_project;
 
-    /** @var array<int, string> */
+    /** @var string[] */
     public array $recipients_investor;
 
     public bool $notify_investor_by_email;
