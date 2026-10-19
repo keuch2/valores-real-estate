@@ -33,7 +33,8 @@ class SubmissionService
         ]);
 
         if ($notify) {
-            dispatch(fn () => $this->notify($submission->id))->afterResponse();
+            // Se ejecuta después de enviar la respuesta al visitante (no hay worker de colas en el hosting).
+            app()->terminating(fn () => $this->notify($submission->id));
         }
 
         return $submission;
